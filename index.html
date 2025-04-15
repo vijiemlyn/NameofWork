@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Work Name</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+    textarea, select, button {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Add Work Name</h2>
+    <form id="workForm">
+      <label for="name">Name of Work:</label>
+      <textarea id="name" name="name" rows="4" placeholder="Enter work name in detail..." required></textarea>
+
+      <label for="section">Section:</label>
+      <select id="section" name="section" required>
+        <option value="">-- Select Section --</option>
+        <option value="Tirunelveli">Tirunelveli</option>
+        <option value="Palayamkottai">Palayamkottai</option>
+        <option value="Nanguneri">Nanguneri</option>
+        <option value="Thoothukudi">Thoothukudi</option>
+        <option value="Tiruchendur">Tiruchendur</option>
+        <option value="Kovilpatti">Kovilpatti</option>
+        <option value="Nagercoil">Nagercoil</option>
+        <option value="Thuckalay">Thuckalay</option>
+        <option value="Kanyakumari">Kanyakumari</option>
+        <option value="Tenkasi">Tenkasi</option>
+        <option value="Sankarankovil">Sankarankovil</option>
+      </select>
+
+      <button type="submit">Submit</button>
+      <div class="message" id="msg"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('workForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const section = document.getElementById('section').value;
+
+      if (!name || !section) {
+        msg.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      fetch('https://script.google.com/macros/s/AKfycbxuPVUoCVcVgVPmdDmWmwTZ9CSx3-rpUeDmlUoRqztM3I-MnlEYfNkH5NH9Q-z40kKG4g/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `name=${encodeURIComponent(name)}&section=${encodeURIComponent(section)}`
+      })
+      .then(response => response.text())
+      .then(data => {
+        msg.textContent = "✅ Work successfully added!";
+        form.reset();
+      })
+      .catch(error => {
+        msg.textContent = "❌ Something went wrong. Try again.";
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
